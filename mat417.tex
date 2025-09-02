@@ -1,0 +1,90 @@
+\documentclass[12pt]{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{xfrac}
+\usepackage{mathtools}
+\usepackage{relsize}
+\usepackage{tikz}
+\usepackage{tikz-cd} 
+\usepackage{halloweenmath}
+\usetikzlibrary{shapes.geometric}
+\usepackage{parskip}
+
+\makeatletter
+\renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{#1}}
+\makeatother
+
+\newcommand{\ops}{\mathcal{L}}
+\newcommand{\reals}{\mathbb{R}}
+\newcommand{\q}{\mathbb{Q}}
+\newcommand{\nats}{\mathbb{N}}
+\newcommand{\ints}{\mathbb{Z}}
+\newcommand{\tr}{\text{tr}}
+\newcommand{\spann}{\text{span}}
+\newcommand{\complex}{\mathbb{C}}
+\newcommand{\iprod}[2]{\langle #1, #2 \rangle}
+\newcommand{\proj}[2]{\text{proj}_{#1}(#2)}
+\newcommand{\makelarge}[1]{\mathlarger{\mathlarger{\mathlarger{#1}}}}
+\newcommand{\interior}{\text{int}}
+\newcommand{\boundary}{\text{bdry}}
+\newcommand{\cover}{\mathcal{O}}
+\newcommand{\g}[1]{\langle #1 \rangle}
+\newcommand{\ba}{\mathfrak{B}}
+\newcommand{\ord}{\text{ord}}
+\newcommand{\lcm}{\text{lcm}}
+\newcommand{\id}{\text{id}}
+\newcommand{\pf}[2]{\dfrac{\partial #1}{\partial #2}}
+\newcommand{\Aut}{\text{Aut}}
+\newcommand{\Alt}{\text{Alt}}
+\newcommand{\sgn}{\text{sgn}}
+\newcommand{\grad}{\text{grad}}
+\newcommand{\curl}{\text{curl}}
+\newcommand{\divv}{\text{div}}
+
+\usepackage[a4paper, total={6in, 8in}]{geometry}
+
+\title{MAT417 Lecture Notes}
+\author{Isaac Clark}
+
+\newtheorem*{thm}{Theorem}
+
+\begin{document}
+
+\maketitle 
+
+\section{Day 1 - Motivating results}
+
+\subsection{Introduction}
+
+The guiding questions that we will seek to answer in this course concern the structure of the prime numbers. More specifically, (1) how many prime numbers are there? and (2) what can we say about the distribution of primes? More carefully, putting $\pi(x) = |\{ p \leq x \ | \ p \text{ prime} \}|$, can we estimate $\pi(x)$? 
+
+\subsection{The Prime Number theorem}
+
+One simple answer is that $\pi(x) \to \infty$ as $x \to \infty$ due to the infinitude of primes. Doing better, the Prime Number theorem asserts $\lim_{x \to \infty} \frac{\pi(x)}{x / \log x} = 1$ (\textit{Exercise}. Use the Prime Number theorem to show that the "size" of the $n$-th prime is $n \log n$). 
+
+Again by the Prime Number theorem, $\pi(x)/x \to 0$, so the primes have zero asymptoic density, but the density tends to $0$ very slowly.
+
+\subsection{Dirichlet's theorem}
+
+Another important theorem about the density of primes is due to Dirichlet. Fix $a, d \in \nats$ coprime. Then there are infinitely many primes of the form $a + kd$ for $k \in \nats$. (\textit{Note}. This is, in a sense, a negative result to the question of an underlying structure of primes "favouring" certain congruences).
+
+\subsection{A (Bad) Lower Bound for $\pi(x)$}
+
+Using Euclid's argument for the infinitude of primes, if $p_n$ is the $n$-th prime then $p_{n + 1} \leq 1 + \prod_{i = 1}^n p_i \leq 2 \prod_{i = 1}^n p_i$. An inductive argument yields $p_n < 2^{2^{n-1}}$ taking logarithms then yields $\pi(x) > \log_2 \log_2 x$.
+
+\subsection{The Riemann $\zeta$-Function}
+
+Put $\zeta(s) = \sum_{n = 1}^{\infty} n^{-s}$. Restricting to $s \in \reals$ for now, by the integral test, $\zeta(s)$ is absolutely convergent if and only if $s > 1$. 
+
+\textit{Observe}. By using the Taylor series of $(1 - x)^{-1}$, expanding, and an argument by prime factorizations, we have $$\prod_{p \text{ prime}} (1 - p^{-s})^{-1} = \prod_{p \text{ prime}} \sum_{k = 0}^{\infty} p^{-ks} = \sum_{\underset{\mathlarger{a_1, ..., a_n \geq 0}}{p_1 < \cdots < p_n \text{ prime}}} (p_1^{a_1} \cdots p_n^{a_n})^{-s} = \sum_{n = 1}^{\infty} n^{-s}$$
+
+\textit{Remark}. Since the harmonic series diverges, the above yields another proof that there are infinitely many primes.
+
+\textit{Next time}. We'll upgrade this argument to show that $\sum_{p \text{ prime}} 1/p$ diverges, concluding that we cannot bound $\pi(x)$ by any $C x^{\theta}$ with $\theta < 1$.
+
+\end{document}
