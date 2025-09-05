@@ -45,13 +45,22 @@
 \newcommand{\grad}{\text{grad}}
 \newcommand{\curl}{\text{curl}}
 \newcommand{\divv}{\text{div}}
+\newcommand{\intsmod}[1]{\ints / #1 \ints}
 
-\usepackage[a4paper, total={6in, 8in}]{geometry}
+\newcommand{\lref}[1]{\textbf{Lemma~\ref{#1}}}
+
+\usepackage[a4paper, total={6.1in, 8in}]{geometry}
 
 \title{MAT417 Lecture Notes}
 \author{Isaac Clark}
 
-\newtheorem*{thm}{Theorem}
+\newtheorem{thm}{Theorem}
+
+\newtheorem{lemma}{Lemma}
+
+\numberwithin{equation}{section}
+\numberwithin{thm}{section}
+\numberwithin{lemma}{section}
 
 \begin{document}
 
@@ -81,10 +90,120 @@ Using Euclid's argument for the infinitude of primes, if $p_n$ is the $n$-th pri
 
 Put $\zeta(s) = \sum_{n = 1}^{\infty} n^{-s}$. Restricting to $s \in \reals$ for now, by the integral test, $\zeta(s)$ is absolutely convergent if and only if $s > 1$. 
 
-\textit{Observe}. By using the Taylor series of $(1 - x)^{-1}$, expanding, and an argument by prime factorizations, we have $$\prod_{p \text{ prime}} (1 - p^{-s})^{-1} = \prod_{p \text{ prime}} \sum_{k = 0}^{\infty} p^{-ks} = \sum_{\underset{\mathlarger{a_1, ..., a_n \geq 0}}{p_1 < \cdots < p_n \text{ prime}}} (p_1^{a_1} \cdots p_n^{a_n})^{-s} = \sum_{n = 1}^{\infty} n^{-s}$$
+\textit{Observe}. By using the Taylor series of $(1 - x)^{-1}$, expanding, and an argument by prime factorizations, we have \[\prod_{p \text{ prime}} (1 - p^{-s})^{-1} = \prod_{p \text{ prime}} \sum_{k = 0}^{\infty} p^{-ks} = \sum_{\underset{\mathlarger{a_1, ..., a_n \geq 0}}{p_1 < \cdots < p_n \text{ prime}}} (p_1^{a_1} \cdots p_n^{a_n})^{-s} = \sum_{n = 1}^{\infty} n^{-s}\]
 
 \textit{Remark}. Since the harmonic series diverges, the above yields another proof that there are infinitely many primes.
 
 \textit{Next time}. We'll upgrade this argument to show that $\sum_{p \text{ prime}} 1/p$ diverges, concluding that we cannot bound $\pi(x)$ by any $C x^{\theta}$ with $\theta < 1$.
+
+\section{Day 2 - $\sum_p 1/p$, Dirichlet series, and $L$-functions}
+
+\subsection{$\sum_p 1/p$ diverges}
+
+From here on out a $p$ in the subscript of a sum or product will mean $p$ prime. Recall $\zeta(s) = \sum_{n = 1}^{\infty} n^{-s}$. By running through the integral test, i.e. comparing $\zeta(s)$ to suitable upper and lower sums of $\int_1^{\infty} x^{-s} \ dx$, we get the bound: \begin{equation}\label{ZetaInequality1}(s - 1)^{-1} < \zeta(s) < 1 + (s - 1)^{-1}\end{equation} Recall also that $\zeta(s) = \prod_p (1 - p^{-s})^{-1}$. Then $\log (\zeta (s)) = - \sum_p \log (1 - p^{-s})^{-1}$.
+
+\begin{lemma}\label{SumOfPrimesEstimate}
+  $\forall s_0 > 1 \ \exists M > 0$ such that $\forall 1 < s \leq s_0 , \ \left| \sum_p p^{-s} - \log((s - 1)^{-1}) \right| < M$.
+\end{lemma}
+\begin{proof}
+  Since $\log$ is order preserving, by~\eqref{ZetaInequality1}: \begin{equation}\label{LogZetaInequality1}
+    -\log(s - 1) < -\sum_p \log(1 - p^{-s}) < \log(s) - \log(s - 1)
+  \end{equation} \begin{equation}\label{LogZetaInequality2}
+    0 < \log(s - 1) - \sum_p \log (1 - p^{-s}) < \log(s)
+  \end{equation} By Taylor expanding $\log (1 + y)$ about $y = 0$ and plugging in $y = p^{-s}$ yields \begin{equation}\label{LogTaylorInequality1}
+    \left| p^{-s} + \log(1 - p^{-s}) \right| < p^{-2s}
+  \end{equation} Applying the triangle inequality to the partial sums and passing to limits, \begin{equation}\label{LogTaylorInequality2}
+    \left| \sum_p p^{-s} + \sum_p \log (1 - p^{-s}) \right| \leq \sum_p |p^{-s} + \log(1 - p^{-s})| < \sum_p p^{-2s} < \zeta(2)
+  \end{equation} Since $s > 1$. Finally, \begin{align*}
+    \left| \sum_p p^{-s} + \log (s - 1) \right| &\leq \left| \sum_p p^{-s} + \sum_p \log(1 - p^{-s}) \right| + \left| \log(s - 1) - \sum_p \log(1 - p^{-s}) \right| \\
+    &< \zeta(2) + \log(s) \text{ , by } \eqref{LogZetaInequality2} \text{ and } \eqref{LogTaylorInequality2} \\
+    &\leq \zeta(2) + s_0 - 1 \text{ , for } 1 < s \leq s_0
+  \end{align*} Thus, $M = \zeta(2) + s_0 - 1$ is as desired.
+\end{proof}
+
+\begin{thm}\label{SumOfPrimesTheorem}
+  $\sum_p 1/p$ diverges.
+\end{thm}
+\begin{proof}
+  An equivalent formulation of \lref{SumOfPrimesEstimate} is $\sum_p p^{-s} = \log(s - 1) + O(1)$. Roughly speaking (the precise formulation is an exercise) as $s \to 1^+, \ \log(s - 1) \to \infty$ and, since $O(1)$ is bounded, so does the right hand side. Thus, the left hand side diverges as $s \to 1^+$ and so we have the claim.
+\end{proof}
+
+\subsection{Dirichlet series and $L$-functions}
+
+For $m \in \nats$, let $(\intsmod{m})^*$ be the invertible elements in the ring $\intsmod{m}$ regarded as a group under multiplication. A character on $\intsmod{m}$, or indeed, any finite abelian group, is a group homomorphism from $\intsmod{m}$ to $\complex^*$, the multiplicative group of complex numbers. Fix a character $\overline{\chi}$ on $\intsmod{m}$. We can extend $\overline{\chi}$ to a map $\ints \to \complex$ by \begin{equation*}\chi(n) =~\begin{cases*} 0 \text{ , if } (n, m) \ne 1 \\ \overline{\chi}(n \text{ mod } m) \text{ , if } (n, m) = 1 \end{cases*}\end{equation*}
+
+\textit{Note}. For all $m \in \nats$ there is the trivial homomorphism $(\intsmod{m})^* \to \complex^*$. The corresponding $\chi$ is the indicator on the integers coprime to $m$. I have heard this referred to as the principal Dirichlet character of modulus $m$, though it was not given a name in lecture. Going forward, for the forseeable future at least, I will use character to refer to both group characters and Dirichlet characters despite the latter technically being an arithmetic function, as well as using $\chi$ to denote both, and trust the reader to infer which is correct.
+
+\textbf{Definition}. For a fixed Dirichlet character $\chi$, put $L(\chi, s) = \sum_{n = 1}^{\infty} \chi(s) n^{-s}$. $L(\chi, s)$ is called a Dirichlet $L$-function.
+
+\begin{thm}
+  $L(\chi, s)$ is absolutely convergent for $\mathfrak{Re}(s) > 1$
+\end{thm}
+\begin{proof}
+  Let $\overline{\chi}$ be the character on $(\intsmod{m})^*$ such that $\chi$ is the corresponding Dirichlet character. For each $n$ coprime to $m$, \begin{equation*} 1 = |1| = |\overline{\chi}(1)| = |\overline{\chi}(n^m)| = |\overline{\chi}(n)|^m \end{equation*} So $|\overline{\chi}(n)| = 1$. Then, for any $n \in \ints$, $|\chi(n)| \leq |\overline{\chi}(n)| = 1$, so $|L(\chi, s)| \leq \zeta(s) < \infty$.
+\end{proof}
+
+Over the next few lectures, we will be building up to the following theorem.
+
+\begin{thm}\label{LFunctionTheorem1} Let $\chi$ be a character.
+  \begin{enumerate}
+    \item $L(\chi, s)$ is holomorphic for $\mathfrak{Re}(s) > 1$.
+    \item For $\chi$ non-principal, $L(\chi, s)$ coverges and is holomorphic for $\mathfrak{Re}(s) > 0$.
+    \item For $\chi$ non-principal, $L(\chi, 1) \ne 0$.
+  \end{enumerate}
+\end{thm}
+
+In preparation, we will prove a few useful lemmas. 
+
+\begin{lemma}\label{DualIsomorphismTheorem}
+  For $G$ a finite abelian group, all characters $\chi: G \to \complex^*$, denoted by $G^{\vee}$, form a group under pointwise multiplication. Then,
+  \begin{enumerate}
+    \item $G^{\vee} \simeq G$.
+    \item $(G^{\vee})^{\vee} \cong G$.
+    \item $(G \times H)^{\vee} \simeq G^{\vee} \times H^{\vee}$, for $H$ another finite abelian group.
+  \end{enumerate}
+\end{lemma}
+
+\textit{Note}. Here, $\simeq$ denotes non-canonically isomorphic, i.e. every isomorphism requires a "choice" and there is no "preferred choice". For example, a finite-dimensional vector space is non-canonically isomorphic to its dual space, since there is no basis-independent isomorphism. We denote canonically isomorphic by $\cong$. Returning to the example of vector spaces, every vector space is canonically isomorphic to its double dual via the association of $v \in V$ to its evaluation map $\widehat{v}: \varphi \mapsto \varphi(v)$.
+
+\begin{proof}
+  Let $\iota_G: G \to G \times H$ be given by $\iota_G(g) = (g, 1)$ and let $\iota_H: H \to G \times H$ be given by $\iota_H (h) = (1, h)$. Clearly $\iota_G, \iota_H$ are injective group homomorphisms. Define $\varphi: (G \times H)^{\vee} \to G^{\vee} \times H^{\vee}$ by $\varphi (\chi) = (\chi \circ \iota_G , \chi \circ \iota_H)$. Define $\phi: G^{\vee} \times H^{\vee} \to (G \times H)^{\vee}$ by $\phi(\chi_1, \chi_2)(g, h) = \chi_1(g)\chi_2(h)$. The reader may then check that $\varphi, \phi$ are well-defined and are inverses of each other. Hence, (3).
+
+  Since $G$ is finite and abelian, it is non-canonically isomorphic to the direct product of cyclic groups, so we may write $G \simeq \prod_{i = 1}^{n} \intsmod{a_i}$ with, when $G$ is nontrivial, all $a_i > 1$. 
+  
+  \textit{Note}. Here, unlike above, we are taking the group operation of the right hand side to be (component-wise) addition.
+  
+  Then, by (3), $G^{\vee} \simeq \prod_{i = 1}^n (\intsmod{a_i})^{\vee}$. So it suffices to consider $\intsmod{a}^{\vee}$ for $a > 1$. Recall from above that $1 = \chi(g)^a$, so we pick a generator $g$ of $\intsmod{a}$ and associate it to $e^{2 \pi i / a}$. This is why the isomorphism will be non-canonical. Then, since the $a$th roots of unity are a cyclic group of order $a$, there is a (again non-canonical) map into $\intsmod{a}$. Composing the aforementioned then yields an isomorphism of $(\intsmod{a})^{\vee}$ and $\intsmod{a}$ By the prefacing remark, hence (1).
+
+  Finally, let $\ \widehat{} : G^{\vee} \to \complex^*$ be the evaluation map, i.e. $\widehat{g} : \chi \mapsto \chi(g)$ and $\ \widehat{} : g \mapsto \widehat{g}$. The reader can easily check that $\ \widehat{} \ $ is an injective group homomorphism and so since, by (1), $|G| = |G^{\vee}| < \infty$, also surjective. Hence (2).
+\end{proof}
+
+\begin{lemma}\label{DualIsOrthonormalBasis}
+  Let $\complex(G)$ be the vector space of complex-valued functions on a finite abelian group $G$, equipped with inner product $\iprod{f_1}{f_2} = |G|^{-1} \sum_{g \in G} f_1(g) \overline{f_2(g)}$. Then,
+  \begin{enumerate}
+    \item The $\chi \in G^{\vee}$ form a basis of $\complex(G)$.
+    \item This basis is orthonormal with respect to $\iprod{}{}$.
+  \end{enumerate}
+\end{lemma}
+
+\begin{proof}
+  As shown in the proof of \ref{DualIsomorphismTheorem}, $\chi(g)$ is always a root of unity, and so, in particular, $1 = |\chi(g)|^2 = \chi(g) \overline{\chi(g)}$, and thus $\chi(g)^{-1} = \overline{\chi(g)}$. We may then compute, \begin{equation*}
+    \iprod{\chi}{\chi} = \frac{1}{|G|} \sum_{g \in G} \chi(g) \overline{\chi(g)} = \frac{1}{|G|} \sum_{g \in G} \chi(g) \chi(g)^{-1} = \frac{1}{|G|} \sum_{g \in G} \chi(gg^{-1}) = 1
+  \end{equation*} Next, consider $\sum_{g \in G} \chi(g)$. For $\chi \ne 1$, there exists some $h \in G$ such that $\chi(h) \ne 1$. Since $g \mapsto hg$ is a bijection, \begin{equation*}
+    \chi(h) \sum_{g \in G} \chi(g) = \sum_{g \in G} \chi(hg) = \sum_{g \in G} \chi(g)
+  \end{equation*} Since $\chi(h) \ne 1$, we have $\sum_{g \in G} \chi(g) = 0$, and \begin{equation*}
+    |G| \iprod{\chi}{1} = \sum_{g \in G} \chi(g) = 0
+  \end{equation*} Thus, $\iprod{\chi}{1} = 0$ for $\chi \ne 1$. Then, \begin{equation*}
+    |G| \iprod{\chi_1}{\chi_2} = \sum_{g \in G} \chi_1(g) \overline{\chi_2(g)} = \sum_{g \in G} \chi_1(g) \chi_2^{-1} (g) = \sum_{g \in G} (\chi_1 \chi_2^{-1})(g) = |G| \iprod{\chi_1 \chi_2^{-1}}{1}
+  \end{equation*} Which is $0$ if and only if $\chi_1\chi_2^{-1} \ne 1$ if and only if $\chi_1 \ne \chi_2$. Hence (2).
+
+  For (1), we may recall from linear algebra that $\dim \complex(G) = |G|$ and that orthogonal sets are linearly independent. By \ref{DualIsomorphismTheorem}, $|G| = |G^{\vee}|$, so $G^{\vee}$ is a linearly independent set with the correct size. Hence (1).
+\end{proof}
+
+Fix $\{ \lambda_n \} \subseteq \reals_{> 0}$ such that $\lambda_n \to \infty$. We will usually take $\lambda_n = \log n$. 
+
+\textbf{Definition}. A Dirichlet series is a series of the form $\sum_{n = 1}^{\infty} a_n e^{- \lambda_n z}$, where $a_n \in \complex$.
+
+\textit{Next time}. We will examine the convergence and analytical properties of Dirichlet series, prove the first and second parts of \ref{LFunctionTheorem1}, and apply these results to $L$-functions.
 
 \end{document}
