@@ -56,12 +56,13 @@
 \author{Isaac Clark}
 
 \newtheorem{thm}{Theorem}
-
+\newtheorem{cor}{Corollary}
 \newtheorem{lemma}{Lemma}
 
 \numberwithin{equation}{section}
 \numberwithin{thm}{section}
 \numberwithin{lemma}{section}
+\numberwithin{cor}{section}
 
 \begin{document}
 
@@ -139,7 +140,7 @@ For $m \in \nats$, let $(\intsmod{m})^*$ be the invertible elements in the ring 
 
 \textbf{Definition}. For a fixed character $\chi$, put $L(\chi, s) = \sum_{n = 1}^{\infty} \chi(s) n^{-s}$. $L(\chi, s)$ is called a Dirichlet $L$-function.
 
-\begin{thm}
+\begin{thm}\label{AbsoluteConvergenceOfLFunction}
   $L(\chi, s)$ is absolutely convergent for $\mathfrak{Re}(s) > 1$
 \end{thm}
 \begin{proof}
@@ -208,5 +209,111 @@ Fix $\{ \lambda_n \} \subseteq \reals_{> 0}$ such that $\lambda_n \to \infty$. W
 \textbf{Definition}. A Dirichlet series is a series of the form $\sum_{n = 1}^{\infty} a_n e^{- \lambda_n z}$, where $a_n \in \complex$.
 
 \textit{Next time}. We will examine the convergence and analytical properties of Dirichlet series, prove the first and second parts of \tref{LFunctionTheorem1}, and apply these results to $L$-functions.
+
+\section{Week 2 - Towards Dirichlet's theorem on primes in arithmetic progressions}
+
+At this point, as I am behind on the notes I have the benefit of hindsight, and so will deviate from Lawrence's notes to give a more streamlined approach to the material covered in Weeks 2 and 3. Fix $m \in \ints^+$. Organizationally, we will prove an extension of \tref{LFunctionTheorem1} as the following theorems.
+
+\begin{thm}\label{LFunctionSubTheorems1}
+  Let $\chi$ be a character of $(\intsmod{m})^*$. Then, \begin{enumerate}
+    \item $L(\chi, s)$ is holomorphic for $\mathfrak{Re}(s) > 1$.
+    \item $L(\chi, s)$ extends meromorphically to $\mathfrak{Re}(s) > 0$.
+    \item For $\chi \ne 1$, $L(\chi, s)$ is holomorphic for $\mathfrak{Re}(s) > 0$ and the series converges.
+    \item If $\chi = 1$, then $L(\chi, s)$ has only a simple pole at $s=1$.
+  \end{enumerate}
+\end{thm}
+
+\begin{thm}\label{LFunctionDoesntVanish}
+  If $\chi \ne 1$, then $L(\chi, 1) \ne 0$.
+\end{thm}
+
+We will see (much) later that these theorems imply Dirichlet's theorem on primes in arithmetic progressions. The following prepatory theorems were largely stated without proof in lecture, so I've supplied them, which means that there is a large probability of them having mistakes, let me know if you find any.
+
+\begin{lemma}\label{ConvergenceOnCompactImpliesConvergenceEverywhere}
+  Suppose $\{f_n(z) \}$ is a sequence of holomorphic functions on some domain $U \subseteq \complex$. Suppose also that there is a function $f(z)$ on $U$ such that $\lim_{n \to \infty} f_n(z) = f(z)$ for all $z \in U$ and that this convergence is uniform on compact subsets of $U$. Then $f(z)$ is holomorphic and $f'(z) = \lim_{n \to \infty} f'_n(z)$. 
+\end{lemma}
+\begin{proof}
+  Hard complex analysis.
+\end{proof}
+
+\begin{lemma}\label{Abel}
+  Let $\{a_n\}_{n \in \nats}, \{b_n\}_{n \in \nats}$ be sequences in $\complex$. Put $A_{m, k} = \sum_{n = m}^k a_n$ and $S_{m, k} = \sum_{n=m}^k a_nb_n$. Then, $S_{m, m'} = \sum_{n=m}^{m'-1} A_{m,n}(b_n - b_{n+1}) + A_{m, m'}b_{m'}$.
+\end{lemma}
+\begin{proof}
+  Write $a_n = A_{m, n} - A_{m, n-1}$ and then rearrange terms.
+\end{proof}
+
+\begin{lemma}\label{ExponentialLemma}
+  Suppose $0 < \alpha < \beta$, $z \in \complex$ with $\mathfrak{Re}(z) > 0$. Write $z = x + iy$. Then, \begin{equation*}
+    \left| e^{-\alpha z} - e^{-\beta z} \right| \leq \frac{|z|}{x} \left( e^{-\alpha x} - e^{-\beta x} \right)
+  \end{equation*}
+\end{lemma}
+\begin{proof}
+  Observe that, $z \int_{\alpha}^{\beta} e^{-tz} \ dt = e^{-\alpha z} - e^{-\beta z}$. And so, \begin{equation*}
+    |e^{-\alpha t} - e^{-\beta z}| \leq |z| \int_{\alpha}^{\beta} |e^{-tz}| \ dt = |z| \int_{\alpha}^{\beta} e^{-tx} \ dt = \frac{|z|}{x} (e^{-\alpha x} - e^{-\beta x})
+  \end{equation*} It may be a good exercise to show that $|e^{-tz}| = e^{-tx}$ as a sanity check.
+\end{proof}
+
+\begin{thm}\label{DirichletSeriesConvergesOnSectors}
+  Suppose $f(z) = \sum_{n=0}^{\infty} a_n e^{-\lambda_n z}$ converges for some $z = z_0$. Then it is uniformly convergent on every sector of $z_0$, i.e. every set of the form \begin{equation*}\{ z \in \complex \ | \ |Arg (z - z_0)| \leq \alpha < \pi/2\}\end{equation*}
+\end{thm}
+\begin{proof}
+  We may assume without loss of generality that $z_0 = 0$. Suppose $z \in \complex$ is such that Arg$(z) > 0$. In particular, $\mathfrak{Re}(z) > 0$. Then, $f(0) = \sum_{n = 0}^{\infty} a_n$ converges, and so the $A_{m, k} = \sum_{n = m}^k a_n$ can be made small. Put $S_{m, k} = \sum_{n = m}^k a_n e^{-\lambda_n z}$. Write $z = x + iy$. Fix $\varepsilon > 0$. Since $\lambda_n \to \infty$ as $n \to \infty$, $x > 0$, and $e^{-t} \to 0$ as $t \to \infty$, we can pick $N$ such that $e^{-\lambda_n x} < \varepsilon x|z|^{-1}$ for $n \geq N$. Take $m \geq N$ large enough that we also have $|A_{m, n}| < \varepsilon$ for all $n \geq m$, write $z = x + iy$ with $x > 0$, and take $k$ larger than $m$. We then estimate, \begin{align*}
+    |S_{m,k}| &= \left| \sum_{n=m}^{k-1} A_{m, n}(e^{-\lambda_n z} - e^{-\lambda_{n+1} z}) + A_{m,k}e^{-\lambda_k z} \right| \text{ , by } \lref{Abel} \\
+    &\leq \sum_{n=m}^{k-1} |A_{m, n}| \cdot \Big|e^{-\lambda_n z} - e^{-\lambda_{n+1} z}\Big| + |A_{m,k}| \cdot \Big|e^{-\lambda_k z}\Big| \\
+    &\leq \varepsilon \left( \frac{|z|}{x} \sum_{n=m}^{k-1} \Big|e^{-\lambda_n x} - e^{-\lambda_{n+1} x} \Big| \right) + \varepsilon \Big|e^{-\lambda_k x} \Big| \text{ , by } \lref{ExponentialLemma} \\
+    &\leq \varepsilon \frac{|z|}{x} \left( \sum_{n=m}^{k-1} e^{-\lambda_n x} - e^{-\lambda_{n+1}x} \right) + \varepsilon^2 \frac{x}{|z|} \text{ , since the } \lambda_n \text{ are strictly increasing} \\
+    &= \varepsilon \frac{|z|}{x} \Big(e^{-\lambda_m x} - e^{-\lambda_k x}\Big) + \varepsilon^2 \frac{x}{|z|} \\
+    &\leq 3 \varepsilon^2
+  \end{align*} And so $f(z)$ converges uniformly.
+\end{proof}
+
+\textbf{Corollary 3.1}. (\tref{DirichletSeriesConvergesOnSectors} + \lref{ConvergenceOnCompactImpliesConvergenceEverywhere}) $\implies$ (1) of \tref{LFunctionSubTheorems1}.
+
+\textit{Proof}. Fix $z_0 \in \complex$ with $\mathfrak{Re}(z_0) > 1$. Then by \tref{AbsoluteConvergenceOfLFunction}, $L(\chi, z_0)$ converges. Put $U = \{ z \in \complex \ | \ \mathfrak{Re}(z) > \mathfrak{Re}(z_0) \}$. Since the sectors form an open cover of the half plane $\{ z \in \complex \ | \ \mathfrak{Re}(z) > \mathfrak{Re}(z_0) \}$, every compact subset of $U$ can be covered by finitely many sectors. On each sector, by \tref{DirichletSeriesConvergesOnSectors}, $L(\chi, s)$ converges uniformly, and so $L(\chi, s)$ converges uniformly on any compact subset of $U$. By \lref{ConvergenceOnCompactImpliesConvergenceEverywhere} and taking $z_0 = 1 + \varepsilon$ and sending $\varepsilon \to 0^+$, we have that $L(\chi, s)$ is holomorphic on $\mathfrak{Re}(z) > 1$. \qed
+
+For part of (2) and (4) of \tref{LFunctionSubTheorems1}, consider that $L(1, s) = \zeta(s) \prod_{p \mid m} (1 - p^{-s})$. The $\prod_{p \mid m}(1 - p^{-s})$ piece clearly does not vanish at $s = 1$. So it suffices to show that $\zeta(s)$ is meromorphic for $\mathfrak{Re}(s) > 0$ and has a unique simple pole at $s = 1$. In particular, we will show that $\zeta(s) = (s-1)^{-1} + \varphi(s)$ where $\varphi(s)$ is holomorphic on $\mathfrak{Re}(s) > 0$.
+
+\textbf{Definition}. For a sequence $\{ \varphi_n \}_{n \in \nats}$ of functions on some domain, we say that $\sum_n \varphi_n$ converges normally if $\sum_n \sup_s |\varphi_n(s)|$ converges.
+
+\begin{thm}
+  Normal convergence implies uniform absolute convergence.
+\end{thm}
+\begin{proof}
+  Come back to this later.
+\end{proof}
+
+For $\mathfrak{Re}(s) > 1$, $(s-1)^{-1} = \int_1^{\infty} t^{-s} \ dt = \sum_{n} \int_n^{n+1} t^{-s} \ dt$. So, for $\mathfrak{Re}(s) > 1$, \begin{equation*}
+  \zeta(s) = \frac{1}{s-1} + \sum_n \int_n^{n+1} n^{-s} - t^{-s} \ dt
+\end{equation*} Put $\varphi_n(s) = \int_n^{n+1} n^{-s} - t^{-s} \ dt$. We estimate, \begin{align*}
+  \sup_s |\varphi_n(s)| &\leq \sup_{n \leq t \leq n+1} |n^{-s} - t^{-s}| \\
+  &\leq \sup_{n \leq t \leq n+1} \left| \frac{d}{dt} t^{-s} \right| \text{ , by the mean value theorem} \\
+  &= \sup_{n \leq t \leq n+1} \left| \frac{s}{t^{s+1}} \right| \\
+  &\leq \frac{|s|}{n^{\mathfrak{Re}(s) + 1}}
+\end{align*} Then, if $\mathfrak{Re}(s) \geq \varepsilon$, then $\sum_n \sup_s |\varphi_n(s)| \leq \sum_n |s| n^{-1-x}$ converges and so we have uniform absolute convergence and thus that $\varphi(s) = \sum_n \varphi_n(s)$ is holomorphic for $\mathfrak{Re}(s) > 0$. Thus, $\zeta(s) = (s-1)^{-1} + \varphi(s)$ is a meromorphic extension of $\zeta$ to $\mathfrak{Re}(s) > 0$ with only a simple pole at $s = 1$. With this we have, by the above remarks, that $L(1, s)$ extends meromorphically to $\mathfrak{Re}(s) > 0$ with only a simple pole at $s = 1$, and thus we have (4) and the case where $\chi = 1$ of (2) of \tref{LFunctionSubTheorems1}. With this it is also now possible to make sense of the Riemann hypothesis.
+
+\textbf{Riemann Hypothesis}. For $\mathfrak{Re}(s) > 0$, the only zeroes of $\zeta(s)$ have $\mathfrak{Re}(s) = 1/2$.
+
+We move now to prove \tref{LFunctionSubTheorems1} for $\chi \ne 1$. If $L(\chi, s)$ converges for $\mathfrak{Re}(s)>0$ then, by the same argument as in the proof of \textbf{Corollary 3.1}, we would have that $L(\chi, s)$ is holomorphic on $\mathfrak{Re}(s) > 0$.
+
+\begin{lemma}\label{DirichletTest}
+  Suppose $\sum_n a_n n^{-s}$ is a Dirichlet series such that all partial sums of the $a_n$ are bounded. Then $\sum_n a_n n^{-s}$ converges for $\mathfrak{Re}(s) > 1$.
+\end{lemma}
+\begin{proof}
+  Let $A_{k,k'} = \sum_n=k^{k'} a_n$. Pick $K$ such that $|A_{k, k'}| < K$ for all $k, k'$. Let $S_{k, k'} = \sum_{n = k}^{k'} a_n n^{-s}$. Then, for $x = \mathfrak{Re}(s) > 0$, 
+  
+  \begin{align*}
+    |S_{k, k'}| &\leq K \left( \sum_{n = k}^{k'-1} \Big| n^{-s} - (n + 1)^{-s} \Big| \right) + \Big| (k')^{-s} \Big| \text{ , by } \lref{Abel} \\
+    &\leq K \left( \sum_{n=k}^{k'-1} n^{-x} - (n+1)^{-x} \right) + \Big| (k')^{-x} \Big| \text{ , by } \lref{ExponentialLemma} \\
+    &= K (k^{-x} - (k')^{-x}) + (k')^{-x} \\
+    &\leq Kk^{-x} + (k')^{-x}
+  \end{align*} Which can each be made arbitrarily small for $k, k'$ sufficently large.
+\end{proof}
+
+\textbf{Corollary 3.2}. For $\chi \ne 1$, by \lref{DualIsOrthonormalBasis} we have, for all $k$, \begin{equation*}
+  \sum_{n = k}^{k + m - 1} \chi(n) = \sum_{a \in (\intsmod{m})^*} \chi(a) = 0
+\end{equation*} So the $A_{k, k'} = \sum_{n=k}^{k'} \chi(n)$ can take only finitely many values, in paritcular, the values for $k' - k < m$ and $k \leq m$. Thus all of the parital sums are bounded, and so by \lref{DirichletTest} we have that $L(\chi, s)$ converges on $\mathfrak{Re}(s) > 0$, and so by the above remark, that it is holomorphic on $\mathfrak{Re}(s) > 0$. Hence (3) of \tref{LFunctionSubTheorems1}.
+
+Define $\zeta_m(s) = \prod_{\chi} L(\chi, s)$ to be the product over all characters $\chi$ of $(\intsmod{m})^*$ of their corresponding $L$-functions. By (2) and (3) of \tref{LFunctionSubTheorems1} we have that $\zeta_m$ is meromorphic on $\mathfrak{Re}(s) > 0$. 
 
 \end{document}
