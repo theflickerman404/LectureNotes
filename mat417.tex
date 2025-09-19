@@ -210,7 +210,9 @@ Fix $\{ \lambda_n \} \subseteq \reals_{> 0}$ such that $\lambda_n \to \infty$. W
 
 \textit{Next time}. We will examine the convergence and analytical properties of Dirichlet series, prove the first and second parts of \tref{LFunctionTheorem1}, and apply these results to $L$-functions.
 
-\section{Week 2 - Towards Dirichlet's theorem on primes in arithmetic progressions}
+\section{Weeks 2, 3 - Dirichlet's theorem and Quadratic reciprocity}
+
+\subsection{Towards Dirichlet's theorem}
 
 At this point, as I am behind on the notes I have the benefit of hindsight, and so will deviate from Lawrence's notes to give a more streamlined approach to the material covered in Weeks 2 and 3. Fix $m \in \ints^+$. Organizationally, we will prove an extension of \tref{LFunctionTheorem1} as the following theorems.
 
@@ -233,7 +235,7 @@ We will see (much) later that these theorems imply Dirichlet's theorem on primes
   Suppose $\{f_n(z) \}$ is a sequence of holomorphic functions on some domain $U \subseteq \complex$. Suppose also that there is a function $f(z)$ on $U$ such that $\lim_{n \to \infty} f_n(z) = f(z)$ for all $z \in U$ and that this convergence is uniform on compact subsets of $U$. Then $f(z)$ is holomorphic and $f'(z) = \lim_{n \to \infty} f'_n(z)$. 
 \end{lemma}
 \begin{proof}
-  Hard complex analysis.
+  Hard complex analysis. Come back later.
 \end{proof}
 
 \begin{lemma}\label{Abel}
@@ -314,6 +316,108 @@ We move now to prove \tref{LFunctionSubTheorems1} for $\chi \ne 1$. If $L(\chi, 
   \sum_{n = k}^{k + m - 1} \chi(n) = \sum_{a \in (\intsmod{m})^*} \chi(a) = 0
 \end{equation*} So the $A_{k, k'} = \sum_{n=k}^{k'} \chi(n)$ can take only finitely many values, in paritcular, the values for $k' - k < m$ and $k \leq m$. Thus all of the parital sums are bounded, and so by \lref{DirichletTest} we have that $L(\chi, s)$ converges on $\mathfrak{Re}(s) > 0$, and so by the above remark, that it is holomorphic on $\mathfrak{Re}(s) > 0$. Hence (3) of \tref{LFunctionSubTheorems1}.
 
-Define $\zeta_m(s) = \prod_{\chi} L(\chi, s)$ to be the product over all characters $\chi$ of $(\intsmod{m})^*$ of their corresponding $L$-functions. By (2) and (3) of \tref{LFunctionSubTheorems1} we have that $\zeta_m$ is meromorphic on $\mathfrak{Re}(s) > 0$. 
+Define $\zeta_m(s) = \prod_{\chi} L(\chi, s)$ to be the product over all characters $\chi$ of $(\intsmod{m})^*$ of their corresponding $L$-functions. By (2) and (3) of \tref{LFunctionSubTheorems1} we have that $\zeta_m$ is meromorphic on $\mathfrak{Re}(s) > 0$.
+
+\textit{Digression}. A central notion from algebraic number theory is that of a number field, i.e. a finite extension of $\q$. Then, with the proper machinery (consider taking 415 if you're interested) we can define functions on number fields with similar analytical properties to $\zeta(s)$. It turns out, if $\zeta_K(s)$ denotes the "zeta function" for a number field $K$, then $\zeta_{\q}(s) = \zeta(s)$ and for $K$ a cyclotomic extension of order $m$, then $\zeta_K(s) = \zeta_m(s)$.
+
+If $p$ is a prime such that $p \nmid m$ then $(p, m) = 1$ and so $\overline{p} \in (\intsmod{m})^*$. Let $f(p)$ be the order of $\overline{p}$ in $(\intsmod{m})^*$. Let $g(p) = \varphi(p)/f(p)$. Since $f(p) \mid \varphi(p) , \ g(p)$ is an integer.
+
+\begin{lemma}\label{CharacterExtensions}
+  Let $A$ be a finite abelian group. Let $B \leq A$ be a subgroup. Let $\chi_B$ be a character on $B$. Then there are exactly $|A/B|$ extensions of $\chi_B$ to $A$.
+\end{lemma}
+\begin{proof}
+  For any $G, H$ groups and $\phi: G \to H$ homomorphism, $\phi$ naturally induces a map $H^{\vee} \to G^{\vee}$ given by $\chi \mapsto \chi \circ \phi$. One can check that this association is a contravariant functor from groups to their duals. Consider the short exact sequence, \begin{equation*}
+    0 \to B \overset{\iota}{\to} A \overset{\pi}{\to} A/B \to 0
+  \end{equation*} Since contravariant functors take injections to surjections and vice versa, we get another short exact sequence, \begin{equation*}
+  0 \to (A/B)^{\vee} \overset{\pi^*}{\to} A^{\vee} \overset{\iota^*}{\to} B^{\vee} \to 0 
+\end{equation*} By the universal property of the quotient group, it follows that $B^{\vee} \cong A^{\vee} / (A/B)^{\vee}$. For $\chi \in A^{\vee}$, $\iota^* \chi = \chi \circ \iota$, so $\iota^*$ is simply the restriction map. Taken together, for any $\chi_B$ character of $B$, $(\iota^*)^{-1}(\chi_B)$, the characters on $A$ which restrict to $\chi_B$, can be uniquely associated to a coset in $A^{\vee} /(A/B)^{\vee}$, which has cardinality $|A/B|$.
+\end{proof} 
+
+Let $T$ be a free variable. Since $\prod_{\omega^n = 1} (1 - \omega T) = (1 - T)^n$, for fixed $p \nmid m$ we have that $\prod_{\chi} (1 - \chi(p)T) = (1 - T^{f(p)})^{g(p)}$ since $\chi(p)^{f(p)} = 1$ by definition and there are exactly $g(p)$ characters such that $\chi(p) = \omega$ for each $\omega$ an $f(p)$-th root of unit, per \lref{CharacterExtensions}. 
+
+Thus, we may write, \begin{equation*}
+  \zeta_m(s) = \prod_{p \nmid m} \Big( 1 - p^{-f(p)s} \Big)^{-g(p)} = \prod_{p \nmid m} \left( \sum_{k=0}^{\infty} p^{-k f(p)s} \right)^{g(p)}
+\end{equation*} Expanding, we'll get a Dirichlet series of the form $\sum_n a_n n^{-s}$, where the $a_n \geq 0$.
+
+\begin{lemma}\label{AnalyticContinuationImpliesCovergence}
+  Suppose $f(z) = \sum_n a_n e^{-\lambda_n z}$ for $\lambda_n$ an increasing, positive sequence of real numbers which tends to $\infty$ as $n \to \infty$. Suppose further that $a_n \geq 0$, that there exists some $\rho \in \reals$ such that $f(z)$ converges for $\mathfrak{Re}(z) > \rho$, and that $f$ analytically continues to a neighbourhood of $\rho$. Then, there exists some $\varepsilon > 0$ such that $f(z)$ converges for $\mathfrak{Re}(z) > \rho - \varepsilon$.
+\end{lemma}
+\begin{proof}
+  In Serre. Come back to this later.
+\end{proof}
+
+\textbf{Corollary 3.3}. If $\zeta_m(s)$ has no pole at $s = 1$, then by \lref{AnalyticContinuationImpliesCovergence} $\zeta_m(s)$ would converge on $\mathfrak{Re}(z) > 0$. Since $f(p)\leq \varphi(p)$, we have that $\prod_{p \nmid m} \sum_{k=0}^{\infty} p^{-k\varphi(m) s}$ converges for $\mathfrak{Re}(z) > 0$. But then $\prod_p \sum_{k=0}^{\infty} p^{-k\varphi(m)s} = \sum_{n=1}^{\infty} n^{-\varphi(m)s}$ only differs from the former by finitely many terms, and so it converges. However, this series certainly diverges for $s = \varphi(m)^{-1}$. Thus, $\zeta_m(s)$ has a pole at $s = 1$. By (3) of \tref{LFunctionSubTheorems1}, each $L(\chi, s)$, for $\chi \ne 1$, converges for $s = 1$, so in particular none of them have poles at $s = 1$. This means that there's no ``funny business'' with some of the $L(\chi, s)$ vanishing at $s = 1$ and some having poles at $s = 1$, and with \lref{AnalyticContinuationImpliesCovergence} we really do have that none of the $L(\chi, 1)$ vanish at $s = 1$. Hence (2) of \tref{LFunctionDoesntVanish}.
+
+\subsection{Density, Dirichlet's theorem}
+
+\begin{lemma}\label{ZetaIsLogPlusBounded}
+  For $s > 1$, $\sum_p p^{-s} = -\log (s-1) + O(1)$ as $s \to 1^+$.
+\end{lemma}
+\begin{proof}
+  As shown in the proof of (3) of \tref{LFunctionSubTheorems1}, $\zeta(s)$ has a simple pole at $s = 1$. Thus we can write $\log (\zeta(s)) = - \log(s-1) + O(1)$ for $s > 1$. But \begin{equation*}
+    \log(\zeta(s)) = \sum_p \log \Big( (1 - p^{-s}) \Big) = \sum_{k = 1}^{\infty} \sum_p \frac{1}{kp^{ks}}
+  \end{equation*} So it suffices to show that the above sum remains bounded as $s \to 1^+$. But this is clear, since \begin{equation*}
+    \sum_{k=2}^{\infty} \sum_p \frac{1}{kp^{ks}} \leq \sum_p \frac{1}{p^s (p^s - 1)} \leq \sum_p \frac{1}{p(p-1)} < \zeta(2)
+  \end{equation*} And so we have the claim.
+\end{proof}
+
+\textbf{Definition}. Let $P$ be the set of all primes. We say that $A \subseteq P$ has density $k$ if $\lim_{s \to 1^+} -\log(s - 1)^{-1} \sum_{p \in A} p^{-s} = k$. By \lref{ZetaIsLogPlusBounded}, this definition makes sense for any $A \subseteq P$, and $0 \leq k \leq 1$. Clearly, if $k>0$ then $|A| = \infty$.
+
+\textit{Remark}. We say that $A \subseteq B \subseteq \nats$ has natural density $k$ in $B$ if \begin{equation*}\lim_{n \to \infty} \frac{|A \cap [0, n]|}{|B \cap [0, n]|} = k\end{equation*} If $A \subset P$ has natural density $k$ in $P$, then $A$ has density $k$. But the converse is not true in general. Dirichlet's theorem is true if, in the below formulation, we replace density with natural density, though we won't prove this (stronger) version.
+
+\begin{thm}\label{DirichletsTheorem}
+  For $m \in \ints^+$ and $a \in \ints$ with $(a, m) = 1$, let $P_a$ be the set of primes which are congruent to $a \mod m$. Then $P_a$ has density $\varphi(m)^{-1}$. In particular, there are infinitely many primes which are congurent to $a$ mod $m$.
+\end{thm}
+\begin{proof}
+  We will break this down into $4$ steps.
+
+  (S1) Since there are only finitely many primes which divide $m$, by \lref{ZetaIsLogPlusBounded}, $L(1, s) \sim -\log(s-1)$.
+
+  (S2) Suppose $\chi \ne 1$. Then \begin{equation*}
+    \log (L(\chi, s)) = \sum_{p \nmid m} \sum_{k = 1}^{\infty} \frac{\chi(p)^k}{kp^{ks}} = L(\chi, s) + \sum_p \sum_{k = 2}^{\infty} \frac{\chi(p)^k}{kp^{ks}}
+  \end{equation*} Further, \begin{equation*}
+    \left| \sum_p \sum_{k=2}^{\infty} \frac{\chi(p)^k}{kp^{ks}} \right| \leq \sum_{p} \sum_{k=2}^{\infty} \frac{1}{kp^{ks}}
+  \end{equation*} So this term is bounded as $s \to 1$. Since, by \tref{LFunctionDoesntVanish}, $L(\chi, 1) \ne 0$, we also have that $\log (L(\chi, s))$ is bounded as $s \to 1$. Taken all together, $L(\chi, s)$ is also bounded as $s \to 1$.
+
+  (S3) Let $g_a(s) = \sum_{p \in P_a} p^{-s}$. Then, \begin{equation*}
+    \sum_{\chi} \chi(a)^{-1} L(\chi, s) = \sum_{\chi} \sum_{p \nmid m} \chi(a)^{-1} \chi(p) p^{-s} = \sum_{p \nmid m} \sum_{\chi} \chi(a^{-1}p) p^{-s}
+  \end{equation*}
+  But we also have that $\sum_{\chi} \chi(a^{-1}p) = \varphi(m)$ if $a^{-1}p \equiv 1 \mod m$ and $0$ otherwise. So, \begin{equation*}
+    \sum_{\chi} \chi(a)^{-1} L(\chi, s) = \varphi(m) g_a(s)
+  \end{equation*}
+
+  (S4) By (S1) and (S2), $\lim_{s \to 1^+} -\log(s-1)^{-1} L(\chi, s) = 1$ if $\chi = 1$ and $0$ otherwise. Finally, applying this with (S3), we have \begin{equation*}
+    \lim_{s \to 1^+} \frac{-g_a(s)}{\log(s-1)} = \lim_{s \to 1^+} \frac{-\sum_{\chi} \chi(a)^{-1} L(\chi, 1)}{\varphi(m) \log(s-1)} = \frac{1}{\varphi(m)} \sum_{\chi} \chi(a)^{-1} \lim_{s \to 1^+} \frac{-L(\chi, s)}{\log(s-1)} = \frac{1}{\varphi(m)}
+  \end{equation*} Which finishes the proof. And thus our first big theorem of the course.
+\end{proof}
+
+\subsection{Quadratic reciprocity, finite fields}
+
+Moving on, let $a \in \ints$. We will now explore quadratic reciprocity. For $p$ prime, we define $\big(\frac{a}{p}\big)$ to be $0$ if $p \mid a$, $1$ if $p \nmid a$ and $a$ is a square mod $p$, and $-1$ if $p \nmid a$ and $a$ is not a square mod $p$. If we fix $p$, the Legendre symbol is multiplicative.
+
+\begin{thm}\label{QuadraticReciprocity}
+  If $p, q$ prime, $n$ an odd integer. Put $\varepsilon(n) = (n-1)/2 \mod 2$. Then, \begin{equation*}
+    \left( \frac{p}{q} \right) \left( \frac{q}{p} \right) = (-1)^{\varepsilon(p) \varepsilon(q)}
+  \end{equation*}
+\end{thm}
+\begin{proof}
+  Elementary number theory. Come back later.
+\end{proof}
+
+\begin{thm}\label{CharacterExtensionOfLegendreSymbol}
+  Suppose $a \in \ints$ is nonzero and square-free. Let $m = 4 |a|$. Then there exists a unique character $\chi_a$ on $(\intsmod{m})^*$ such that $\chi_a(p) = \big(\frac{a}{p}\big)$ for all $p \nmid m$.
+\end{thm}
+\begin{proof}
+  In Serre Chapter 1, by quadratic reciprocity apparently. Come back later.
+\end{proof}
+
+\begin{thm}\label{PrimeSquaresHaveHalfDensity}
+  For $a \in \ints$ not a square, the set of $p$ such that $\big(\frac{a}{p} \big) = 1$ has density $1/2$.
+\end{thm}
+\begin{proof}
+  We can assume without loss of generality that $a$ is square-free. Let $m = 4 |a|$. Let $\chi_a$ be the character as in \tref{CharacterExtensionOfLegendreSymbol}. Let $H \subseteq (\intsmod{m})^*$ be its kernel. For $p \nmid m$, $\chi_a(p) = 1$ if and only if $p \in H$. In particular, $|H| = \varphi(m)/2$. For any $x \in (\intsmod{m})^*$ the density of primes $p$ such that $p \equiv x \mod m$ is, by \tref{DirichletsTheorem}, $\varphi(m)^{-1}$. And so, taken all together, the density of $p$ such that $p \in H$ is $1/2$.
+\end{proof}
+
+\textbf{Corollary 3.4}. If the set of all primes $p$ such that $\big( \frac{a}{p} \big) = 1$ has density greater than $1/2$, then $a$ must be a square.
 
 \end{document}
