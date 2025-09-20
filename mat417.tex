@@ -420,4 +420,43 @@ Moving on, let $a \in \ints$. We will now explore quadratic reciprocity. For $p$
 
 \textbf{Corollary 3.4}. If the set of all primes $p$ such that $\big( \frac{a}{p} \big) = 1$ has density greater than $1/2$, then $a$ must be a square.
 
+Fix a prime $p$, then $\mathbb{F}_p = \intsmod{p}$ is a field. We recall that for any field $K$, either $n \cdot 1_K \ne 0$ for all $n \in \ints$, in which case we say that $K$ has characteristic $0$, or there is a prime $p$ such that $\{ n \in \ints \ : \ n \cdot 1_K = 0 \} = (p)$, and we say that $K$ has characteristic $p$. If $K$ is finite, then the map $\ints \to K$ given by $n \mapsto n \cdot 1_K$ cannot be injective, and so $K$ has non-zero characteristic. In particular, this map is a homomorphism, and so its image is a unital subring of $K$, and thus isomorphic to $\mathbb{F}_p$ for some prime $p$. Then $K$ is a finite-dimensional vector space over this ``copy'' of $\mathbb{F}_p$ and so has cardinality $p^n$ for some $n \geq 1$. So finite fields must have prime power cardinality. Conversely, we claim that given $p$ prime and $n \geq 1$, there is a unique (up to isomorphism) field of cardinality $q = p^n$. Let $K = \overline{\mathbb{F}_p}$ be the algebraic closure of $\mathbb{F}_p$, which is unique up to isomorphism. One can check via the binomial theorem that the map $x \mapsto x^q$ is a ring homomorphism. Consider $\mathbb{F}_q = \{ x \in K \ : \ x^q = x \}$, by the aforementioned remark, this is a subfield of $K$. Since $K$ is algebraically closed, $\mathbb{F}_q$ contains at most $q$ distinct elements, as every polynomial of degree $q$ in $K$ has, counting multiplicity, $q$ roots. On the other hand, the formal derivative of $x^q - x$ is simply $-1$, and so the greatest common divisor of $x^q-x$ and its derivative is $1$, and so there are no repeated roots, and so there are precisely $q$ elements in $\mathbb{F}_q$. For uniqueness, if $L$ is a field with $q$ elements, its multiplicative group $L^*$ has size $q-1$, so $x^{q-1} = 1$ for every $x\ne0$ in $L$, and thus $x^q = x$ for all $x \in L$. Since $L$ can naturally be embedded in $K$ and consists of all roots of $x^q - x$ in $K$, we have uniqueness up to isomorphism.
+
+\begin{lemma}\label{SumOfTotient}
+  Suppose $n \geq 1$, then $\sum_{d \mid n} \varphi(d) = n$.
+\end{lemma}
+\begin{proof}
+  Come back later.
+\end{proof}
+
+\begin{lemma}\label{CyclicGroupSufficientCondition}
+  Let $H$ be a finite group of order $n$. Suppose that for all $d \mid n$ we have $|\{ x \in H \ : \ x^d = 1 \}| \leq d$. Then $H$ is cyclic.
+\end{lemma}
+\begin{proof}
+  If $x \in H$ has order $d$, then $|\g{x}| = d$. And so, for all $y \in H$ such that $y^d = 1$, it must be that $y = x^i$ for some $i$, as $d = |\g{x}| \leq |\{ h \in H \ : \ h^d = 1 \}| \leq d$. Thus, there are $\varphi(d)$ elements of order $d$ in $H$, in paritcular, the elements of the form $x^i$ for $i$ coprime to $d$. Then, by \lref{SumOfTotient}, $|H| = \sum_{d \mid n} \varphi(d)$. By our previous calculation, if there is an element of order $d$ then there are precisely $\varphi(d)$ elements of order $d$. Further, since every element of $H$ has an order dividing $d$, $|H| = \sum_{d \mid n} |\{ h \in H \ : \ \ord(h) = d \}|$. Where each $|\{ h \in H \ : \ \ord(h) = d\}|$ is either $\varphi(d)$ or $0$. Thus, each is non-empty, and so in particular there exists an element of order $n$ in $H$, and so $H$ is cyclic.
+\end{proof}
+
+\begin{thm}
+  For all $q = p^n$, $\mathbb{F}_q^*$ is cyclic.
+\end{thm}
+\begin{proof}
+  First, $|\mathbb{F}_q^*| = q - 1$. Then, for all $d \mid (q - 1)$, $\{ x \in \mathbb{F}_q^* \ : \ x^d = 1 \}$ are precisely the roots of $x^d - 1$ in $\mathbb{F}_q$, of which there are at most $d$. Thus, the premise of \lref{CyclicGroupSufficientCondition} is satisfied, and so we have the claim.
+\end{proof}
+
+\textbf{Corollary 3.5}. If $p \nmid a$ for $p$ an odd prime, then $\big( \frac{a}{p} \big) = a^{(p-1)/2} \mod p$.
+
+\textit{Proof}. By Fermat's little theorem, $a^{p-1} \equiv 1 \mod p$. So $a^{(p-1)/2}$ is conrguent to either $1$ or $-1$ mod $p$. If $a = b^2$, then $a^{(p-1)/2} \equiv b^{p-1} \equiv 1 \mod p$. Conversely, since $\mathbb{F}_p^*$ is cyclic of even order, if $a^{(p-1)/2} = 1$ then there is an element $b \in \mathbb{F}_p^*$ such that $a = b^2$. \qed
+
+\begin{lemma}\label{QuadraticReciprocityFor2}
+  Let $p$ an odd prime. Then, \begin{enumerate}
+    \item $\big( \frac{1}{p} \big) = 1$.
+    \item $\big( \frac{-1}{p} \big) = (-1)^{\varepsilon(p)}$.
+    \item $\big( \frac{2}{p} \big) = (-1)^{\omega(p)}$.
+    \item $\big( \frac{p}{2} \big) = 1$.
+  \end{enumerate} Where $\omega(n) = (n^2 - 1)/8 \mod 2$, for $n$ an odd integer.
+\end{lemma}
+\begin{proof}
+  Come back later.
+\end{proof}
+
 \end{document}
