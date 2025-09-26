@@ -497,7 +497,7 @@ Taking \tref{QuadraticReciprocity} and \lref{QuadraticReciprocityFor2} together,
 
 \textbf{Corollary 3.5}. If the set of all primes $p$ such that $\big( \frac{a}{p} \big) = 1$ has density greater than $1/2$, then $a$ must be a square.
 
-\section{Analytic continuation of, and a function equation for the $\zeta$-function}
+\section{Analytic continuation of, and a functional equation for the $\zeta$-function}
 
 Let $\Gamma(s) = \int_0^{\infty} t^{s-1} e^{-t} \ dt$. We will now try to build towards the following theorems.
 
@@ -520,7 +520,7 @@ Where the proof of \tref{ZetaIsMeromorphic} will essentially boil down to using 
   Roughly, (read: I might come back and give a better argument, but this is what he gave in lecture) there's two reasons that $\Gamma(s)$ might not converge, (1) the integrad might diverge at $0$ or, (2) the integrad might diverge at $\infty$. A more sophisticated argument by L'Hopital's rule will show that the integrad is very rapidly decreasing, so we need not worry about (2). For (1), we observe that $\Gamma(s)$ converges absolutely if and only if $\int_{\varepsilon}^1 t^{s-1} \ dt$ converges absolutely for all $\varepsilon > 0$, which, for $\mathfrak{Re}(s) > 0$, it does. Hence we have absolute convergence. To show holomorphicity, argue that $\Gamma(s)$ converges uniformly on compact sets and apply \lref{ConvergenceOnCompactImpliesConvergenceEverywhere}.
 \end{proof}
 
-\begin{lemma}
+\begin{lemma}\label{GammaProperties}
   We have, for all $\mathfrak{Re}(s) > 0$, \begin{enumerate}
     \item $\Gamma(s + 1) = s \Gamma(s)$.
     \item $\Gamma(1) = 1$.
@@ -531,6 +531,74 @@ Where the proof of \tref{ZetaIsMeromorphic} will essentially boil down to using 
   For (1), use integration by parts. For (2), $\Gamma(1) = \int_0^{\infty} e^{-t} \ dt = e^0 = 1$. By (1), $\Gamma(s) = s^{-1} \Gamma(s + 1)$, where the RHS is, by \lref{ConvergenceOfGamma} is meromorphic for $\mathfrak{Re}(s) > -1$ with a pole at $s = 0$. An inductive argument iterates this construction to define $\Gamma(s)$ on larger and larger regions with poles at the non-positive integers. Hence (3).
 \end{proof}
 
-\textit{Fun fact}. $\Gamma(s + s')B(s, s') = \Gamma(s)\Gamma(s')$, where $B(s, s') = \int_0^1 x^{s-1} (1 - x)^{s' - 1} \ dx$
+\textit{Fun fact}. $\Gamma(s + s')B(s, s') = \Gamma(s)\Gamma(s')$, where $B(s, s') = \int_0^1 x^{s-1} (1 - x)^{s' - 1} \ dx$.
+
+Let $f: \reals \to \complex$ be an infinitely often differentiable function with the additional property that for all $p(x) \in \complex[x]$ and $n \in \nats$, $\lim_{|x| \to \infty} |p(x) f^{(n)}(x)| = 0$. For example, $f(x)~=~e^{-\pi u x^2}$ for $\mathfrak{Re}(u) > 0$.
+
+For such an $f$, we define $\hat{f}(y) = \int_{- \infty}^{\infty} e^{2\pi i xy}f(x) \ dx$, the Fourier transform of $f$.
+
+\begin{thm}\label{PoissonSummation}
+  In this case, \begin{equation*}
+    \sum_{n = - \infty}^{\infty} f(n) = \sum_{n = - \infty}^{\infty} \hat{f}(n)
+  \end{equation*}
+\end{thm}
+
+\textit{Remark}. This theorem is known as Poisson summaation. With the ``correct amount'' of functional analysis, this is obvious. Moreover, a generalization of this for $\complex$-valued functions leaving a locally compact abelian group, $G$, when replacing the summation over $\ints$ with a suitable lattice in $G$, is also completely obvious. Unfortunately, MAT417 does not presume familarity with graduate-level functional analysis and abstract algebra, so we regretfully do not give a proof.
+
+\begin{lemma}\label{GaussianIntegralEvaluation}
+  We have, \begin{equation*}
+    \int_{- \infty}^{\infty} e^{-\pi u x^2} \ dx = \sqrt{u}
+  \end{equation*}
+\end{lemma}
+\begin{proof}
+  We compute, \begin{align*}
+    \int_{-\infty}^{\infty} e^{-\pi u x^2} \ dx &= \frac{\sqrt{u}}{\sqrt{\pi}} \int_{- \infty}^{\infty} e^{-y^2} \ dy \text{ , substituting } y = \sqrt{\frac{u}{\pi}} x \\
+    &= \frac{\sqrt{u}}{\sqrt{\pi}} \cdot \sqrt{\pi} = \sqrt{u} \text{ , by the well-known Gaussian integral}
+  \end{align*} Which finishes the proof.
+\end{proof}
+
+\begin{lemma}\label{ThetaFunctionalEquation}
+  Put $\theta(u) = \sum_{n = - \infty}^{\infty} e^{-\pi n^2 u} = 1 + 2 \sum_{n = 1}^{\infty} e^{-\pi n^2 u}$. Then, $\theta(u^{-1}) = \sqrt{u} \theta(u)$.
+\end{lemma}
+\begin{proof}
+  Let $f(x) = e^{-\pi u x^2}$. By \lref{GaussianIntegralEvaluation}, $\hat{f}(y) = \sqrt{u^{-1}} e^{-\pi u^{-1}y^2}$, and so \begin{align*}
+    \sqrt{u^{-1}} \theta(u^{-1}) &= \sqrt{u^{-1}} \sum_{n = - \infty}^{\infty} e^{-\pi n^2 u^{-1}} \\
+    &= \sum_{n = -infty}^{\infty} \hat{f}(n) \\
+    &= \sum_{n = -\infty}^{\infty} f(n) \text{ , by \tref{PoissonSummation}} \\
+    &= \theta(u)
+  \end{align*} And so, after rearranging, we have the claim.
+\end{proof}
+
+\begin{lemma}\label{XiInTermsOfTheta}
+  Put $\xi(s) = \zeta(s) \pi^{-s/2}\Gamma(s/2)$. Then, \begin{equation*}
+    2 \xi(s) = \int_0^{\infty} \big( \theta(u) - 1 \big)u^{s/2} \frac{du}{u}
+  \end{equation*}
+\end{lemma}
+\begin{proof}
+  We compute, \begin{align*}
+    \int_0^{\infty} (\theta(u) - 1)u^{s/2} \frac{du}{u} &= 2 \int_0^{\infty} \sum_{n = 1}^{\infty} e^{-\pi n^2 u} u^{s/2 - 1} \ du \\
+    &= 2 \sum_{n = 1}^{\infty} \int_0^{\infty} e^{-\pi n^2 u} u^{s/2 - 1} \ du \text{ , see the below remark} \\
+    &= 2 \sum_{n = 1}^{\infty} \frac{1}{\pi^{s/2} n^s} \int_0^{\infty}e^{-t} t^{s/2 - 1} \ dt \text{ , substituting } t = u \pi n^2 \\
+    &= 2 \zeta(s) \pi^{-s/2} \Gamma(s/2) \text{ , by their respective definitions} \\
+    &= 2 \xi(s)
+  \end{align*} In the second equality, you might object that we have not justified why we may interchange the sum and the integral, since this is non-trivial in general. Well, don't be so god-damn pedantic, some things aren't for you to know. In all seriousness, there is a technical argument using absolute convergence, though it is unenlightening and so I've neglected to include it. 
+\end{proof}
+
+Now, consider that, for $0 < \mathfrak{Re}(s) < 1$, \begin{align*}
+  \int_0^1 \big( \theta(u) - 1 \big)u^{s/2} \frac{du}{u} &= \frac{-2}{s} + \int_0^1 \theta(u) u^{s/2} \frac{du}{u} \\
+  &= -\int_{\infty}^1 \theta(t^{-1})t^{-s/2}t \frac{dt}{t^2} \text{ , substituting } u = t^{-1} \\
+  &= \int_1^{\infty} \theta(t^{-1})t^{-s/2} \frac{dt}{t} \\
+  &= \int_1^{\infty} \theta(t) t^{(1 -s)/2} \frac{dt}{t} \text{ , by \lref{ThetaFunctionalEquation}} \\
+  &= \frac{-2}{s} + \frac{-2}{1 - s} + \int_1^{\infty} \big( \theta(t) - 1 \big) t^{(1-s)/2} \frac{dt}{t}
+\end{align*} And so, by \lref{XiInTermsOfTheta}, we have \begin{align*}
+  \xi(s) + \frac{1}{s} + \frac{1}{1 - s} &= \frac{1}{2} \left( \frac{-2}{s} + \frac{-2}{1 - s} + \int_0^{\infty} \big( \theta(u) - 1 \big)u^{s/2} \frac{du}{u} \right) + \frac{1}{s} + \frac{1}{1 - s} \\
+  &= \int_0^{\infty} \big( \theta(u) - 1 \big)u^{s/2} \frac{du}{u} \\
+  &= \int_0^1 \big( \theta(u) - 1 \big)u^{s/2} \frac{du}{u} + \int_1^{\infty} \big( \theta(u) - 1 \big)u^{s/2} \frac{du}{u} \\
+  &= \int_1^{\infty} \Big( \big( \theta(u) - 1 \big)u^{s/2} + \big( \theta(u) - 1 \big)u^{(1 -s)/2} \Big) \frac{du}{u} \text{ , by the above}
+\end{align*} Where $s^{-1} + (1 - s)^{-1}$ and the RHS are symmetric under $s \mapsto 1 - s$, and so $\xi(s)$ must also be symmetric under $s \mapsto 1-s$. Hence, we have \tref{ZetaFunctionalEquation}. \qed
+
+By \tref{ZetaFunctionalEquation}, for $0 < \mathfrak{Re}(s) < 1$, \begin{equation*}
+  \zeta(1 - s) = \zeta(s) \pi^{1/2 - s} \Gamma(s/2) \Gamma \big((1 - s)/2 \big)^{-1}
+\end{equation*} Iterating this functional equation, much like in the proof of \lref{GammaProperties}, allows us to extend $\zeta(s)$ meromorphically to $\complex$. Near $s = 0$, an analysis of the yields that $s = 1$ is indeed the only pole of this extension, and iterating yields that this $s = 1$ is the only pole, period. Moreover, more analysis of the above will reveal that this extension of $\zeta(s)$ has a zero at $s = -2$, and, by iterating, $\zeta(s)$ has a zero at all of the non-positive even integers, the so-called ``trivial zeroes'' of $\zeta(s)$. Hence, \tref{ZetaIsMeromorphic}. \qed
 
 \end{document}
