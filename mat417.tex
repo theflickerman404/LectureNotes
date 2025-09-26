@@ -499,6 +499,38 @@ Taking \tref{QuadraticReciprocity} and \lref{QuadraticReciprocityFor2} together,
 
 \section{Analytic continuation of, and a function equation for the $\zeta$-function}
 
+Let $\Gamma(s) = \int_0^{\infty} t^{s-1} e^{-t} \ dt$. We will now try to build towards the following theorems.
 
+\begin{thm}\label{ZetaIsMeromorphic}
+  $\zeta(s)$ extends meromorphically to $\complex$ with only a simple pole at $s = 1$.
+\end{thm}
+
+\begin{thm}\label{ZetaFunctionalEquation}
+  For all $0 < \mathfrak{Re}(s) < 1$, \begin{equation*}
+    \zeta(s) \pi^{-s/2} \Gamma(s/2) = \zeta(1 - s) \pi^{\frac{s-1}{2}}\Gamma \left( \frac{1-s}{2} \right)
+  \end{equation*}
+\end{thm}
+
+Where the proof of \tref{ZetaIsMeromorphic} will essentially boil down to using \tref{ZetaFunctionalEquation} to iteratively extend $\zeta(s)$. As such, we will move to prove \tref{ZetaFunctionalEquation} first.
+
+\begin{lemma}\label{ConvergenceOfGamma}
+  $\Gamma(s)$ absolutely converges and is holomorphic for $\mathfrak{Re}(s) > 0$.
+\end{lemma}
+\begin{proof}
+  Roughly, (read: I might come back and give a better argument, but this is what he gave in lecture) there's two reasons that $\Gamma(s)$ might not converge, (1) the integrad might diverge at $0$ or, (2) the integrad might diverge at $\infty$. A more sophisticated argument by L'Hopital's rule will show that the integrad is very rapidly decreasing, so we need not worry about (2). For (1), we observe that $\Gamma(s)$ converges absolutely if and only if $\int_{\varepsilon}^1 t^{s-1} \ dt$ converges absolutely for all $\varepsilon > 0$, which, for $\mathfrak{Re}(s) > 0$, it does. Hence we have absolute convergence. To show holomorphicity, argue that $\Gamma(s)$ converges uniformly on compact sets and apply \lref{ConvergenceOnCompactImpliesConvergenceEverywhere}.
+\end{proof}
+
+\begin{lemma}
+  We have, for all $\mathfrak{Re}(s) > 0$, \begin{enumerate}
+    \item $\Gamma(s + 1) = s \Gamma(s)$.
+    \item $\Gamma(1) = 1$.
+    \item $\Gamma(s)$ extends meromorphically on $\complex$ with simple poles at $0, -1, -2, ...$
+  \end{enumerate}
+\end{lemma}
+\begin{proof}
+  For (1), use integration by parts. For (2), $\Gamma(1) = \int_0^{\infty} e^{-t} \ dt = e^0 = 1$. By (1), $\Gamma(s) = s^{-1} \Gamma(s + 1)$, where the RHS is, by \lref{ConvergenceOfGamma} is meromorphic for $\mathfrak{Re}(s) > -1$ with a pole at $s = 0$. An inductive argument iterates this construction to define $\Gamma(s)$ on larger and larger regions with poles at the non-positive integers. Hence (3).
+\end{proof}
+
+\textit{Fun fact}. $\Gamma(s + s')B(s, s') = \Gamma(s)\Gamma(s')$, where $B(s, s') = \int_0^1 x^{s-1} (1 - x)^{s' - 1} \ dx$
 
 \end{document}
