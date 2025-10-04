@@ -46,6 +46,8 @@
 \newcommand{\curl}{\text{curl}}
 \newcommand{\divv}{\text{div}}
 \newcommand{\intsmod}[1]{\ints / #1 \ints}
+\newcommand{\T}{\mathbb{T}}
+\newcommand{\im}{\text{im}}
 
 \newcommand{\lref}[1]{\textbf{Lemma~\ref{#1}}}
 \newcommand{\tref}[1]{\textbf{Theorem~\ref{#1}}}
@@ -499,6 +501,47 @@ Taking \tref{QuadraticReciprocity} and \lref{QuadraticReciprocityFor2} together,
 
 \section{Analytic continuation of, and a functional equation for the $\zeta$-function}
 
+\subsection{Prerequisite functional analysis}
+
+Let $f: \reals \to \complex$ be an infinitely often differentiable function with the additional property that for all $p(x) \in \complex[x]$ and $n \in \nats$, $\lim_{|x| \to \infty} |p(x) f^{(n)}(x)| = 0$. For example, $f(x)~=~e^{-\pi u x^2}$ for $\mathfrak{Re}(u) > 0$.
+
+We define $S(\reals) \subseteq \mathcal{C}^{\infty}(\reals)$, the Schwartz space of $\reals$, be the space of smooth functions $f$ such that for all $p(x)~\in~\complex[x]$ and $n \in \nats$, $\lim_{|x| \to \infty} |p(x)f^{(n)}(x)| = 0$. For example, $f(x)~=~e^{-\pi u x^2}$.
+
+For such an $f$, we define $\hat{f}(y) = \int_{- \infty}^{\infty} e^{2\pi i xy}f(x) \ dx$, the Fourier transform of $f$.
+
+\textit{Remark}. We can actually define the Fourier transform for $\mathcal{C}^2$ functions with this vanishing condition, and we will have essentially the same results we lay out below. Even more generally, we can define a ``Fourier transform'' for a suitable class of continuous functions leaving a locally compact abelian group using the Gelfand representation, an immensely powerful tool in operator algebra theory, and worth a Google.
+
+\begin{thm}
+  The map $f \mapsto \hat{f}$ is an isomorphism of $S(\reals)$, and $\hat{\hat{f}}(x) = f(-x)$.
+\end{thm}
+\begin{proof}
+  The former remark follows clearly from the latter. The latter is a (if I recall correctly) relatively straightforward calculation, come back later.
+\end{proof}
+
+\textit{Remark}. Everything in this remark should be read with a massive, implicit ``come back later'' looming over the text, I might flesh this out properly in my promised appendix on the $p$-adic fields. Let $L^2(\reals)$ be the space of square-integrable functions on $\reals$. It is not hard to see that $S(\reals) \hookleftarrow L^2(\reals)$ and that the former is dense in the latter (perhaps by Stone's theroem). There is a way that one can extend $\hat{\cdot}$ to $L^2(\reals)$, which has the structure of a Hilbert space under $\iprod{f}{g} = \int_{\reals} f(x)\overline{g(x)} \ dx$. One can check that, up to multiplication by a constant, $\hat{\cdot}$ preserves inner products, whence a normalization thereof is unitary, and so admits a dense orthonormal sequence of eigenvectors. By considering the family of ODEs, \begin{equation*}
+  \left[ U \Bigg( \frac{1}{2\pi} \frac{d}{dx} \Bigg) + U(x) \right]\psi(x) = 0
+\end{equation*} Where $U$ is such that $\psi$ is a solution if and only if $\hat{\psi}$ is a solution. For example, one may take $U(x) = x$, or indeed any $U$ such that the form of the above operator is invariant under the Fourier transform. Then, by existence and uniqueness, these give rise to eigenvalues of the Fourier transform. There's a cool video on YouTube that shows that the Hermite functions are one such collection.
+
+Consider $f: \T = \reals / \ints \to \complex$. If $f$ is ``nice enough'' then, putting $a_n = \int_0^1 f(x)e^{-2\pi i n x} \ dx$, then its Fourier series $\sum_{n \in \ints} a_n e^{2 \pi i n x}$ converges to $f$. In this case, since the $e^{2 \pi i n x}$ are a dense, orthonormal sequence with respect to the above described inner product on $L^2(\reals)$, and so in this case the convergence is absolute, and so, since $\T$ is compact, uniform.
+
+\begin{thm}\label{PoissonSummation}
+  (Poisson summation) For all $f \in S(\reals)$, \begin{equation*}
+    \sum_{n = - \infty}^{\infty} f(n) = \sum_{n = - \infty}^{\infty} \hat{f}(n)
+  \end{equation*}
+\end{thm}
+
+\begin{proof}
+  Suppose $f \in S(\reals)$. Put $F(x) = \sum_{n \in \ints} f(x + n)$. By construction, $F$ is well-defined since $f$ vanishes rapidly, $\mathcal{C}^{\infty}$, and $\ints$-periodic. Then, \begin{align*}
+    \sum_{n \in \ints} f(n) = F(0) = \sum_{n \in \ints} a_n &= \sum_{n = -\infty}^{\infty} \int_0^1 F(x)e^{2 \pi i n x} \ dx \\
+    &= \sum_{n = -\infty}^{\infty} \sum_{m = -\infty}^{\infty} \int_0^1 f(x + m + n) e^{2 \pi i n x} \ dx \\
+    &= \sum_{n = -\infty}^{\infty} \sum_{m = -\infty}^{\infty} \int_m^{m+1} f(x + n) \ dx \\
+    &= \sum_{n = -\infty}^{\infty} \int_{-\infty}^{\infty} e^{2 \pi i n x} f(x) \ dx \\
+    &= \sum_{n \in \ints} \hat{f}(n)
+  \end{align*} Which finishes the proof.
+\end{proof}
+
+\subsection{$\Gamma$, $\theta$, $\xi$, et. al}
+
 Let $\Gamma(s) = \int_0^{\infty} t^{s-1} e^{-t} \ dt$. We will now try to build towards the following theorems.
 
 \begin{thm}\label{ZetaIsMeromorphic}
@@ -532,18 +575,6 @@ Where the proof of \tref{ZetaIsMeromorphic} will essentially boil down to using 
 \end{proof}
 
 \textit{Fun fact}. $\Gamma(s + s')B(s, s') = \Gamma(s)\Gamma(s')$, where $B(s, s') = \int_0^1 x^{s-1} (1 - x)^{s' - 1} \ dx$.
-
-Let $f: \reals \to \complex$ be an infinitely often differentiable function with the additional property that for all $p(x) \in \complex[x]$ and $n \in \nats$, $\lim_{|x| \to \infty} |p(x) f^{(n)}(x)| = 0$. For example, $f(x)~=~e^{-\pi u x^2}$ for $\mathfrak{Re}(u) > 0$.
-
-For such an $f$, we define $\hat{f}(y) = \int_{- \infty}^{\infty} e^{2\pi i xy}f(x) \ dx$, the Fourier transform of $f$.
-
-\begin{thm}\label{PoissonSummation}
-  In this case, \begin{equation*}
-    \sum_{n = - \infty}^{\infty} f(n) = \sum_{n = - \infty}^{\infty} \hat{f}(n)
-  \end{equation*}
-\end{thm}
-
-\textit{Remark}. This theorem is known as Poisson summaation. With the ``correct amount'' of functional analysis, this is obvious. Moreover, a generalization of this for $\complex$-valued functions leaving a locally compact abelian group, $G$, when replacing the summation over $\ints$ with a suitable lattice in $G$, is also completely obvious. Unfortunately, MAT417 does not presume familarity with graduate-level functional analysis and abstract algebra, so we regretfully do not give a proof.
 
 \begin{lemma}\label{GaussianIntegralEvaluation}
   We have, \begin{equation*}
